@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#03040a">
+  <title>Harmonix - Interactive Resonance Visualizer</title>
+  <meta name="description" content="Harmonix: Hypnotic, ultra-sharp vector resonance visualizer with high-DPI rendering, harmonic ripples, and interactive generative physics.">
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- High-DPI Razor Sharp Canvas Visualizer -->
+  <canvas id="visualizer-canvas"></canvas>
+
+  <!-- Mobile Backdrop Overlay to Dismiss HUD -->
+  <div class="hud-backdrop" id="hud-backdrop" aria-hidden="true"></div>
+
+  <!-- Interactive HUD Container -->
+  <div class="hud-container">
+    <button class="hud-toggle-btn" id="hud-toggle-btn" aria-label="Toggle Controls">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+      Settings
+    </button>
+
+    <aside class="hud-panel" id="hud-panel" role="dialog" aria-label="Animation Settings">
+      <!-- Mobile Pull Handle -->
+      <div class="sheet-handle" aria-hidden="true"></div>
+
+      <div class="hud-header">
+        <div class="hud-title">
+          <span>Harmonix</span>
+          <span class="hud-badge">HD</span>
+        </div>
+        <button class="btn-close" id="btn-close-hud" title="Close Panel (H)" aria-label="Close Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">
+          <span>Pattern Mode</span>
+        </div>
+        <div class="chips-grid">
+          <button class="chip-btn active" data-mode="harmonic">Harmonic Pulse</button>
+          <button class="chip-btn" data-mode="cymatics">Cymatic Waves</button>
+          <button class="chip-btn" data-mode="orbit">Orbital Gyro</button>
+          <button class="chip-btn" data-mode="spirograph">Spirograph</button>
+        </div>
+      </div>
+
+      <!-- Theme Selector -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">
+          <span>Color Spectrum</span>
+        </div>
+        <div class="chips-grid">
+          <button class="chip-btn active" data-theme="neon">
+            <span class="theme-dot" style="background: #00f5d4;"></span>
+            Cyber Neon
+          </button>
+          <button class="chip-btn" data-theme="aurora">
+            <span class="theme-dot" style="background: #00ff87;"></span>
+            Aurora
+          </button>
+          <button class="chip-btn" data-theme="solar">
+            <span class="theme-dot" style="background: #ffd000;"></span>
+            Solar Gold
+          </button>
+          <button class="chip-btn" data-theme="amethyst">
+            <span class="theme-dot" style="background: #c77dff;"></span>
+            Amethyst
+          </button>
+          <button class="chip-btn" data-theme="electric" style="grid-column: span 2;">
+            <span class="theme-dot" style="background: #00d2ff;"></span>
+            Electric Glacial
+          </button>
+        </div>
+      </div>
+
+      <!-- Sliders -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">
+          <span>Ring Density</span>
+          <span class="ctrl-val" id="val-rings">16</span>
+        </div>
+        <input type="range" id="slider-rings" min="6" max="36" value="16" step="1">
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-label">
+          <span>Wave Speed</span>
+          <span class="ctrl-val" id="val-speed">1.0x</span>
+        </div>
+        <input type="range" id="slider-speed" min="0.2" max="2.5" value="1.0" step="0.1">
+      </div>
+
+      <div class="ctrl-group">
+        <div class="ctrl-label">
+          <span>Line Sharpness</span>
+          <span class="ctrl-val" id="val-stroke">2.0px</span>
+        </div>
+        <input type="range" id="slider-stroke" min="1.0" max="5.0" value="2.0" step="0.5">
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="hud-actions">
+        <button class="btn-primary" id="btn-pause">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+          Pause
+        </button>
+        <button class="btn-secondary" id="btn-audio">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+          Audio Off
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Floating Shortcut Badges (desktop only) -->
+  <div class="shortcut-tips">
+    <div class="tip-pill"><span class="tip-key">Space</span> Pause</div>
+    <div class="tip-pill"><span class="tip-key">Click</span> Shockwave</div>
+    <div class="tip-pill"><span class="tip-key">H</span> Hide Panel</div>
+    <div class="tip-pill"><span class="tip-key">F</span> Fullscreen</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

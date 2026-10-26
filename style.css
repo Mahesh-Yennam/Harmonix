@@ -1,0 +1,490 @@
+/* ==========================================================================
+   Harmonix - High-DPI Crystal Clear Vector Resonance Visualizer
+   Mobile-Friendly, Touch-Optimized, and Desktop-Refined
+   ========================================================================== */
+
+:root {
+  --bg-color: #03040a;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent-color: #00f5d4;
+  --glass-bg: rgba(10, 14, 26, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-font-smoothing: antialiased;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+/* Fullscreen High-DPI Canvas */
+#visualizer-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: crosshair;
+  z-index: 1;
+  touch-action: none;
+}
+
+/* Mobile Dimming Backdrop Overlay */
+.hud-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.hud-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Floating Clean Minimal Glassmorphic HUD */
+.hud-container {
+  position: fixed;
+  bottom: max(20px, calc(16px + var(--safe-bottom)));
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.hud-panel {
+  pointer-events: auto;
+  width: 320px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transform-origin: bottom right;
+}
+
+.hud-panel.hidden {
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Sheet pull handle (hidden on desktop, visible on mobile) */
+.sheet-handle {
+  display: none;
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  margin: 0 auto 12px auto;
+}
+
+/* Toggle Pill Button */
+.hud-toggle-btn {
+  pointer-events: auto;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  padding: 10px 18px;
+  border-radius: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.hud-toggle-btn:hover,
+.hud-toggle-btn:active {
+  background: rgba(20, 28, 52, 0.95);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 20px rgba(0, 245, 212, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Hide Settings toggle button whenever the HUD panel is open */
+.hud-toggle-btn.hidden,
+.hud-container:has(.hud-panel:not(.hidden)) .hud-toggle-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: scale(0.8) translateY(12px) !important;
+}
+
+/* Header */
+.hud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hud-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(0, 245, 212, 0.15);
+  color: var(--accent-color);
+  border: 1px solid rgba(0, 245, 212, 0.3);
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+  min-width: 32px;
+  min-height: 32px;
+  justify-content: center;
+}
+
+.btn-close:hover,
+.btn-close:active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Control groups */
+.ctrl-group {
+  margin-bottom: 14px;
+}
+
+.ctrl-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  margin-bottom: 7px;
+}
+
+.ctrl-val {
+  color: var(--accent-color);
+  font-family: monospace;
+  font-size: 12px;
+}
+
+/* Chip buttons grid */
+.chips-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.chip-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 8px 10px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  min-height: 38px;
+}
+
+.chip-btn:hover,
+.chip-btn:active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.chip-btn.active {
+  background: rgba(0, 245, 212, 0.15);
+  border-color: var(--accent-color);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 245, 212, 0.25);
+}
+
+.theme-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Custom sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+  transition: background 0.2s;
+}
+
+input[type="range"]:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover,
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.2);
+  box-shadow: 0 0 16px var(--accent-color);
+}
+
+/* Bottom Action Buttons */
+.hud-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-primary {
+  flex: 1;
+  background: linear-gradient(135deg, var(--accent-color), #00b4d8);
+  border: none;
+  color: #030814;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  min-height: 42px;
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 245, 212, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  min-height: 42px;
+}
+
+.btn-secondary:hover,
+.btn-secondary:active {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary.active {
+  background: rgba(247, 37, 133, 0.2);
+  border-color: #f72585;
+  color: #ff75a0;
+  box-shadow: 0 0 12px rgba(247, 37, 133, 0.3);
+}
+
+/* Floating Help Pill Badge (Desktop) */
+.shortcut-tips {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.tip-pill {
+  background: rgba(10, 14, 26, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tip-key {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Mobile Responsive Refinements (Phones & Tablets)
+   ========================================================================== */
+@media (max-width: 640px) {
+  /* Container spans bottom edge */
+  .hud-container {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 0;
+    align-items: center;
+  }
+
+  /* Floating trigger button positioned cleanly above safe bottom */
+  .hud-toggle-btn {
+    position: fixed;
+    bottom: max(16px, calc(12px + var(--safe-bottom)));
+    right: 16px;
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 50px;
+    z-index: 11;
+  }
+
+  /* Bottom-sheet drawer modal style */
+  .hud-panel {
+    width: 100%;
+    max-width: 100vw;
+    border-radius: 24px 24px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding: 14px 20px calc(20px + var(--safe-bottom)) 20px;
+    max-height: 82vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform-origin: center bottom;
+    transition: transform 0.38s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.25s ease;
+  }
+
+  .hud-panel.hidden {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Visible pull handle */
+  .sheet-handle {
+    display: block;
+  }
+
+  /* Touch-friendly chips & sliders */
+  .chip-btn {
+    padding: 9px 12px;
+    font-size: 12.5px;
+    min-height: 42px;
+  }
+
+  input[type="range"] {
+    height: 8px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+  }
+
+  .ctrl-group {
+    margin-bottom: 16px;
+  }
+
+  /* Hide keyboard shortcuts pill overlay on touch devices */
+  .shortcut-tips {
+    display: none;
+  }
+}
+
+/* Landscape Mobile Tweaks */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hud-panel {
+    max-height: 92vh;
+    padding-top: 10px;
+    padding-bottom: 14px;
+  }
+  .ctrl-group {
+    margin-bottom: 8px;
+  }
+  .sheet-handle {
+    display: none;
+  }
+}
