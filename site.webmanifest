@@ -1,0 +1,19 @@
+{
+  "name": "Harmonix - Interactive Resonance Visualizer",
+  "short_name": "Harmonix",
+  "description": "Hypnotic, ultra-sharp vector resonance visualizer with high-DPI rendering, harmonic ripples, and interactive generative physics.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#03040a",
+  "theme_color": "#03040a",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
