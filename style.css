@@ -35,6 +35,135 @@ html, body {
   overscroll-behavior: none;
 }
 
+/* ==========================================================================
+   Gamility Explorer Return Ribbon
+   ========================================================================== */
+.top-nav-ribbon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: rgba(3, 4, 10, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.ribbon-container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ribbon-left {
+  display: flex;
+  align-items: center;
+}
+
+.ribbon-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.ribbon-brand:hover {
+  transform: translateY(-1px);
+}
+
+.ribbon-brand .brand-icon {
+  width: 22px;
+  height: 22px;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ribbon-brand .brand-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ribbon-brand .brand-text {
+  letter-spacing: -0.02em;
+}
+
+.ribbon-brand .brand-highlight {
+  color: var(--accent-color);
+}
+
+.ribbon-brand .brand-sub {
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(0, 245, 212, 0.15);
+  color: var(--accent-color);
+  border: 1px solid rgba(0, 245, 212, 0.3);
+  padding: 2px 7px;
+  border-radius: 9999px;
+  margin-left: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ribbon-right {
+  display: flex;
+  align-items: center;
+}
+
+.ribbon-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.ribbon-back-btn:hover {
+  background: rgba(0, 245, 212, 0.2);
+  border-color: rgba(0, 245, 212, 0.45);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .top-nav-ribbon {
+    height: 44px;
+  }
+  .ribbon-container {
+    padding: 0 12px;
+  }
+  .ribbon-brand {
+    font-size: 13px;
+  }
+  .ribbon-brand .brand-sub {
+    display: none;
+  }
+  .ribbon-back-btn {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+}
+
 /* Fullscreen High-DPI Canvas */
 #visualizer-canvas {
   position: absolute;

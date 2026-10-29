@@ -2,13 +2,24 @@
 <html lang="en">
 
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RFQ8M0VSFN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-RFQ8M0VSFN');
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#03040a">
-  <title>Harmonix - Interactive Resonance Visualizer</title>
+  <title>Harmonix — Interactive Resonance Visualizer — Gamility Explorer</title>
   <meta name="description" content="Harmonix: Hypnotic, ultra-sharp vector resonance visualizer with high-DPI rendering, harmonic ripples, and interactive generative physics.">
+  <meta name="author" content="Gamility">
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,17 +37,58 @@
   <!-- Open Graph & Social Cards -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mahesh-yennam.github.io/Harmonix/">
-  <meta property="og:title" content="Harmonix - Interactive Resonance Visualizer">
+  <meta property="og:title" content="Harmonix — Interactive Resonance Visualizer — Gamility Explorer">
   <meta property="og:description" content="Hypnotic, ultra-sharp vector resonance visualizer with high-DPI rendering, harmonic ripples, and interactive generative physics.">
   <meta property="og:image" content="https://mahesh-yennam.github.io/Harmonix/preview.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://mahesh-yennam.github.io/Harmonix/">
-  <meta name="twitter:title" content="Harmonix - Interactive Resonance Visualizer">
+  <meta name="twitter:title" content="Harmonix — Interactive Resonance Visualizer — Gamility Explorer">
   <meta name="twitter:description" content="Hypnotic, ultra-sharp vector resonance visualizer with high-DPI rendering, harmonic ripples, and interactive generative physics.">
   <meta name="twitter:image" content="https://mahesh-yennam.github.io/Harmonix/preview.png">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Harmonix: Resonance & Cymatic Visualizer",
+    "url": "https://mahesh-yennam.github.io/Harmonix/",
+    "description": "High-DPI vector resonance visualizer featuring sub-pixel concentric wave physics, cymatic acoustic interference patterns, orbital 3D gyro loops, and procedural pentatonic crystal chimes.",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "isAccessibleForFree": true
+  }
+  </script>
 </head>
 
 <body>
+  <!-- =========================================================================
+       TOP GAMILITY RETURN RIBBON
+       ========================================================================= -->
+  <header class="top-nav-ribbon" role="banner">
+    <div class="ribbon-container">
+      <div class="ribbon-left">
+        <a href="https://mahesh-yennam.github.io/Gamility/" class="ribbon-brand" title="Gamility Home" aria-label="Gamility Home">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+            </svg>
+          </div>
+          <span class="brand-text">Gami<span class="brand-highlight">lity</span> <small class="brand-sub">Explorer</small></span>
+        </a>
+      </div>
+      <div class="ribbon-right">
+        <a href="https://mahesh-yennam.github.io/Gamility/explorer.html" class="ribbon-back-btn" title="Back to Explorer Hub">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Back to Explorer Hub</span>
+        </a>
+      </div>
+    </div>
+  </header>
   <!-- High-DPI Razor Sharp Canvas Visualizer -->
   <canvas id="visualizer-canvas"></canvas>
 
